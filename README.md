@@ -1,38 +1,15 @@
 # Landmark Recognition Using Deep Learning
 
 ## Overview
-This project focuses on **landmark recognition** using **deep learning techniques**. The **Google-Landmarks dataset** is used to train a model capable of identifying various landmarks from images.
+This project implements **landmark recognition** using **deep learning techniques**. It is based on **InceptionV3 with transfer learning** and uses **GAN-based data augmentation** to handle an **imbalanced dataset**.
 
 ## Dataset
-- The project uses the **Google-Landmarks dataset**, which contains labeled images of thousands of landmarks.
-- Preprocessed images were resized to **128x128 pixels** to optimize memory and computational efficiency.
+- **Google-Landmarks Dataset v2 (GLDv2)**: A large-scale dataset containing labeled landmark images.
+- Data preprocessing includes **resizing, normalization, and augmentation** to improve model performance.
 
-### **Google-Landmarks Dataset Links:**
-1. **Google Landmarks Dataset v2 (GLDv2)**
-   - [Download from Kaggle](https://www.kaggle.com/c/landmark-recognition-2020/data)
-   - [Google Research Dataset](https://github.com/cvdfoundation/google-landmark)  
-
-2. **Google Landmarks Dataset v1 (GLDv1)**
-   - [Google Research Dataset](https://github.com/cvdfoundation/google-landmark)  
-   - [Original Google Drive Link](https://research.google/tools/datasets/google-landmarks-dataset/)  
-
-### **Steps to Download the Dataset:**
-1. **From Kaggle (Recommended)**
-   - Sign in to **Kaggle** and accept competition rules.
-   - Use the Kaggle API to download:
-     ```bash
-     kaggle competitions download -c landmark-recognition-2020
-     unzip landmark-recognition-2020.zip -d dataset
-     ```
-
-2. **From Google Research**
-   - Use `wget` to download specific subsets of the dataset.
-   - Follow instructions provided in the official repository.
-
-## Model Implementation
-- **InceptionV3** was used for feature extraction, leveraging **transfer learning** for improved classification.
-- **Data augmentation techniques**, including **Generative Adversarial Networks (GANs)**, were applied to balance the dataset.
-- Achieved **82.03% Top-5 accuracy** using **GAN-based augmentation**.
+### Dataset Links
+1. **Google Landmarks Dataset v2 (GLDv2)**: [Download](https://www.kaggle.com/c/landmark-recognition-2020/data)
+2. **Google Research Dataset**: [GitHub Repository](https://github.com/cvdfoundation/google-landmark)
 
 ## Technologies Used
 - **Python**
@@ -69,10 +46,45 @@ Ensure you have the following installed:
    python test_model.py --image sample.jpg
    ```
 
+## How to Load Model
+```python
+from tensorflow.keras.models import load_model
+
+# Load trained model
+model = load_model('landmark_recognition_model.h5')
+
+# Predict on an image
+def preprocess_image(image_path):
+    import cv2, numpy as np
+    image = cv2.imread(image_path)
+    image = cv2.resize(image, (128, 128))
+    image = np.expand_dims(image / 255.0, axis=0)
+    return image
+
+image = preprocess_image('sample.jpg')
+prediction = model.predict(image)
+print("Predicted Landmark ID:", np.argmax(prediction))
+```
+
+## Key Code Components
+- **Transfer Learning**: Uses **InceptionV3** for feature extraction.
+- **Data Augmentation**: GANs are used to generate additional samples.
+- **Classification Model**: Predicts landmarks from images.
+- **Evaluation Metrics**: Accuracy, confusion matrix, and classification report.
+
 ## Results
-- The model achieved **82.03% Top-5 accuracy**.
-- **Confusion matrices** and **classification reports** provided insights into model performance.
-- Data augmentation using **GANs** significantly improved classification accuracy.
+- Achieved **high accuracy** on the Google-Landmarks dataset.
+- Improved recognition performance through **GAN-based data augmentation**.
+
+## Summary
+✔ **Step 1:** Install dependencies  
+✔ **Step 2:** Train the CNN model  
+✔ **Step 3:** Save & Load the trained model  
+✔ **Step 4:** Run predictions on test images  
+✔ **Step 5:** Evaluate performance using accuracy & confusion matrix  
+
+## External Description
+The **Landmark Recognition System** is an advanced **deep learning application** that identifies **famous landmarks** from images. It combines **transfer learning, CNNs, and GAN-based data augmentation** for **improved classification accuracy**.
 
 ## Contributing
 Feel free to contribute by submitting issues or pull requests!
@@ -81,8 +93,7 @@ Feel free to contribute by submitting issues or pull requests!
 This project is licensed under the **MIT License**.
 
 ## Acknowledgments
-- **Google-Landmarks dataset** for providing high-quality labeled images.
+- **Google-Landmarks dataset** for high-quality labeled images.
 - **TensorFlow & Keras** for deep learning frameworks.
 - **InceptionV3 developers** for the pre-trained model.
-- **GAN researchers** for improving data augmentation techniques.
-
+- **GAN researchers** for impro
